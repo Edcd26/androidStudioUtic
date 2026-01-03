@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Prueba">
+        android:theme="@style/Base.Theme.Prueba">
         <activity
             android:name=".UsuarioActivity"
             android:exported="false" />
@@ -23,6 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MenuPrincipalActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Prueba.NoActionBar"> <!-- Usa el estilo .NoActionBar -->
+            <!-- ... intents ... -->
+        </activity>
+
     </application>
 
 </manifest>

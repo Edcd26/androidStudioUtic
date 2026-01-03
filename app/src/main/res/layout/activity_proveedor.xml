@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProveedorActivity">
+
+    <!-- TÍTULO PRINCIPAL -->
+    <TextView
+        android:id="@+id/titulo_proveedores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="GESTIÓN DE PROVEEDORES"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- CAMPO CÓDIGO -->
+    <TextView
+        android:id="@+id/label_cod"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="CÓDIGO"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titulo_proveedores" />
+
+    <EditText
+        android:id="@+id/txt_cod_prov"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/label_cod"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/label_cod"
+        app:layout_constraintTop_toTopOf="@+id/label_cod" />
+
+    <!-- CAMPO RAZÓN SOCIAL -->
+    <TextView
+        android:id="@+id/label_razon_social"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="RAZÓN SOCIAL"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/label_cod"
+        app:layout_constraintStart_toStartOf="@+id/label_cod"
+        app:layout_constraintTop_toBottomOf="@+id/txt_cod_prov" />
+
+    <EditText
+        android:id="@+id/txt_razonSocial"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/label_razon_social"
+        app:layout_constraintEnd_toEndOf="@+id/txt_cod_prov"
+        app:layout_constraintStart_toStartOf="@+id/txt_cod_prov"
+        app:layout_constraintTop_toTopOf="@+id/label_razon_social" />
+
+    <!-- CAMPO RUC -->
+    <TextView
+        android:id="@+id/label_ruc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="RUC"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/label_razon_social"
+        app:layout_constraintStart_toStartOf="@+id/label_razon_social"
+        app:layout_constraintTop_toBottomOf="@+id/txt_razonSocial" />
+
+    <EditText
+        android:id="@+id/txt_ruc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="@+id/label_ruc"
+        app:layout_constraintEnd_toEndOf="@+id/txt_razonSocial"
+        app:layout_constraintStart_toStartOf="@+id/txt_razonSocial"
+        app:layout_constraintTop_toTopOf="@+id/label_ruc" />
+
+    <!-- CAMPO TELÉFONO -->
+    <TextView
+        android:id="@+id/label_telefono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TELÉFONO"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/label_ruc"
+        app:layout_constraintStart_toStartOf="@+id/label_ruc"
+        app:layout_constraintTop_toBottomOf="@+id/txt_ruc" />
+
+    <EditText
+        android:id="@+id/txt_telefono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="phone"
+        app:layout_constraintBottom_toBottomOf="@+id/label_telefono"
+        app:layout_constraintEnd_toEndOf="@+id/txt_ruc"
+        app:layout_constraintStart_toStartOf="@+id/txt_ruc"
+        app:layout_constraintTop_toTopOf="@+id/label_telefono" />
+
+    <!-- CAMPO DIRECCIÓN -->
+    <TextView
+        android:id="@+id/label_direccion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="DIRECCIÓN"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/label_telefono"
+        app:layout_constraintStart_toStartOf="@+id/label_telefono"
+        app:layout_constraintTop_toBottomOf="@+id/txt_telefono" />
+
+    <EditText
+        android:id="@+id/txt_direccion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPostalAddress"
+        app:layout_constraintBottom_toBottomOf="@+id/label_direccion"
+        app:layout_constraintEnd_toEndOf="@+id/txt_telefono"
+        app:layout_constraintStart_toStartOf="@+id/txt_telefono"
+        app:layout_constraintTop_toTopOf="@+id/label_direccion" />
+
+    <!-- CAMPO EMAIL -->
+    <TextView
+        android:id="@+id/label_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="EMAIL"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/label_direccion"
+        app:layout_constraintStart_toStartOf="@+id/label_direccion"
+        app:layout_constraintTop_toBottomOf="@+id/txt_direccion" />
+
+    <EditText
+        android:id="@+id/txt_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toBottomOf="@+id/label_email"
+        app:layout_constraintEnd_toEndOf="@+id/txt_direccion"
+        app:layout_constraintStart_toStartOf="@+id/txt_direccion"
+        app:layout_constraintTop_toTopOf="@+id/label_email" />
+
+    <!-- BOTONES DE ACCIÓN -->
+    <LinearLayout
+        android:id="@+id/botones_accion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/txt_email"
+        app:layout_constraintStart_toStartOf="@+id/label_email"
+        app:layout_constraintTop_toBottomOf="@+id/txt_email">
+
+        <Button
+            android:id="@+id/btn_agregar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="Registrar"
+            android:text="AGREGAR" />
+
+        <Button
+            android:id="@+id/btn_editar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:onClick="Modificar"
+            android:text="EDITAR" />
+
+        <Button
+            android:id="@+id/btn_borrar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="Eliminar"
+            android:text="BORRAR" />
+    </LinearLayout>
+
+    <!-- LISTA DE PROVEEDORES -->
+    <ListView
+        android:id="@+id/lista_proveedores"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_cancelar"
+        app:layout_constraintEnd_toEndOf="@+id/botones_accion"
+        app:layout_constraintStart_toStartOf="@+id/botones_accion"
+        app:layout_constraintTop_toBottomOf="@+id/botones_accion" />
+
+    <!-- BOTONES INFERIORES -->
+    <Button
+        android:id="@+id/btn_cancelar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="llamaCancelar"
+        android:text="CANCELAR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintStart_toStartOf="@+id/lista_proveedores" />
+
+    <Button
+        android:id="@+id/btn_salir"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="SALIR"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_cancelar"
+        app:layout_constraintEnd_toEndOf="@+id/lista_proveedores"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toTopOf="@+id/btn_cancelar" />
+
+    <!-- Guía para dividir los botones inferiores por la mitad -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

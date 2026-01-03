@@ -73,7 +73,7 @@ public class AccesoActivity extends AppCompatActivity {
                 //sale del acceso
                 finish();
                 //funcion para llamar a otra activity
-                Intent siguiente = new Intent(this, UsuarioActivity.class); // AQUI DEBE IR EL NOMBRE DEL MENU PRINCIPAL EN VEZ DE AccesoActivity
+                Intent siguiente = new Intent(this, MenuPrincipalActivity.class); // AQUI DEBE IR EL NOMBRE DEL MENU PRINCIPAL EN VEZ DE AccesoActivity
 
                 //ENVIA  el parametro
                 siguiente.putExtras(bundle);
