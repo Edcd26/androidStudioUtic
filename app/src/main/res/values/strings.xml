@@ -1,14 +1,20 @@
 <resources>
-    <string name="app_name">Prueba</string>
-    <string name="title_activity_menu">MenuActivity</string>
+    <string name="app_name">AppDenis</string>
+    <string name="title_activity_menu_principal">MenuPrincipalActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Desarrollo Mobile</string>
+    <string name="nav_header_subtitle">denis.correa@gmail.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_Usuario">Usuario</string>
+    <string name="menu_Categoria">Categoria</string>
+    <string name="menu_Proveedor">Proveedor</string>
+    <string name="menu_UnidaddeMedida">Unidad de Medida</string>
+    <string name="menu_Producto">Producto</string>
+    <string name="menu_Pedido">Pedido de Compra</string>
+    <string name="menu_Presupuesto">Presupuesto</string>
+    <string name="menu_salir">Salir</string>
+
 </resources>
