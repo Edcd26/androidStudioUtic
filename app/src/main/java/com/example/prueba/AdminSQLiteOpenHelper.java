@@ -17,10 +17,11 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper
         bd_pam3.execSQL("create table pedidos(id_pedido integer primary key autoincrement, id_producto integer, cod_usu integer, cantidad integer,ped_fecha date, p_estado text)");
         bd_pam3.execSQL("create table pais(id_pais integer primary key autoincrement, pais_descri text)");
         bd_pam3.execSQL("create table usuario(cod_usu integer primary key autoincrement, usu_nombre text, usu_rol text, usu_estado text, usu_login integer, usu_clave text)");
+
         bd_pam3.execSQL("create table producto(id_producto integer primary key autoincrement, producto_descri text, producto_estado text)");
 
-        bd_pam3.execSQL("insert into usuario values('1', 'DENIS CORREA', 'ADMINISTRADOR','ACTIVO', 'admin',123)");
-        bd_pam3.execSQL("insert into pais values('1','PARAGUAY')");
+        bd_pam3.execSQL("insert into usuario values(1, 'DENIS CORREA', 'ADMINISTRADOR','ACTIVO', 'admin',123)");
+        bd_pam3.execSQL("insert into pais values(1,'PARAGUAY')");
     }
 
     @Override
