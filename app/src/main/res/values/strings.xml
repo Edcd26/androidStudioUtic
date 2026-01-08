@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">AppDenis</string>
+    <string name="app_name">Siempre Verde Mobile</string>
     <string name="title_activity_menu_principal">MenuPrincipalActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Desarrollo Mobile</string>
-    <string name="nav_header_subtitle">denis.correa@gmail.com</string>
+    <string name="nav_header_title">Vivero Siempre Verde</string>
+    <string name="nav_header_subtitle">Desarrollo Mobile</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 

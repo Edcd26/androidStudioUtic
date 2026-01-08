@@ -13,10 +13,15 @@
         android:theme="@style/Base.Theme.Prueba">
         <activity
             android:name=".UsuarioActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Prueba"
+            android:windowSoftInputMode="adjustPan"  />
         <activity
             android:name=".ProveedorActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Prueba"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".AccesoActivity"
             android:exported="true">
