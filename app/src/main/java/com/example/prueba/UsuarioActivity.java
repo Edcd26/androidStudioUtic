@@ -68,14 +68,6 @@ public class UsuarioActivity extends AppCompatActivity {
         //consulta para cargar el cursor
         fila = db.rawQuery("SELECT cod_usu, usu_nombre, usu_rol, usu_estado, usu_login, usu_clave FROM usuario ORDER BY cod_usu", null);
 
-        // para ver si la fila trae datos
-        /*if (fila.getCount() == 0) {
-            android.widget.Toast.makeText(this, "La consulta devolvió 0 registros", android.widget.Toast.LENGTH_LONG).show();
-        } else {
-            android.widget.Toast.makeText(this, "Se encontraron " + fila.getCount() + " registros", android.widget.Toast.LENGTH_SHORT).show();
-        }*/
-
-
         //recorre el cursor
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         while (fila.moveToNext())//recorre el cursor

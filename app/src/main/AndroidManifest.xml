@@ -15,6 +15,9 @@
             android:name=".UsuarioActivity"
             android:exported="false" />
         <activity
+            android:name=".ProveedorActivity"
+            android:exported="false" />
+        <activity
             android:name=".AccesoActivity"
             android:exported="true">
             <intent-filter>
