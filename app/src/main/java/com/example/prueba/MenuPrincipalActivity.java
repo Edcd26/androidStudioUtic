@@ -48,9 +48,9 @@ public class MenuPrincipalActivity extends AppCompatActivity
         {
             startActivity(new Intent(this,U_MedidaActivity.class));
         }
-        else if (id == R.id.nav_Categoria)
+        else if (id == R.id.nav_Deposito)
         {
-            startActivity(new Intent(this,CategoriaActivity.class));
+            startActivity(new Intent(this, DepositoActivity.class));
         }
         else if (id == R.id.nav_Proveedor)
         {

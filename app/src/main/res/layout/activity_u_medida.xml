@@ -9,10 +9,9 @@
     android:fitsSystemWindows="true"
     android:paddingTop="16dp"
     android:paddingBottom="32dp"
-    tools:context=".UsuarioActivity">
+    tools:context=".U_MedidaActivity">
 
     <!-- Tarjeta del Título -->
-    <!-- Agregado layout_marginHorizontal para forzar el margen lateral -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardTitulo"
         android:layout_width="match_parent"
@@ -31,14 +30,14 @@
             android:background="@drawable/side_nav_bar">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/txtProveedores"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
                 android:gravity="center"
                 android:letterSpacing="0.05"
                 android:padding="16dp"
-                android:text="USUARIOS"
+                android:text="Unidad de Medida"
                 android:textAllCaps="true"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
@@ -47,7 +46,6 @@
     </androidx.cardview.widget.CardView>
 
     <!-- Contenedor del Formulario -->
-    <!-- Agregado layout_marginHorizontal -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/formContainer"
         android:layout_width="match_parent"
@@ -61,46 +59,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardTitulo">
 
-        <!-- FILA 1: Código y Estado -->
+        <!-- FILA 1: Código y RUC -->
         <EditText
             android:id="@+id/txt_codigo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/edit_text_selector"
             android:hint="Código"
-            android:inputType="number"
+            android:inputType="text"
             android:minHeight="50dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textColor="#333333"
             android:textColorHint="#757575"
-            app:layout_constraintEnd_toStartOf="@+id/txt_estado"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/txt_estado"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/edit_text_selector"
-            android:minHeight="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/txt_codigo"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- FILA 2: Nombre Completo -->
+        <!-- FILA 2: Razón Social -->
         <EditText
-            android:id="@+id/txt_nombre"
+            android:id="@+id/txt_descripcion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/edit_text_selector"
-            android:hint="Nombre Completo"
-            android:inputType="textPersonName"
+            android:hint="Descripcion"
+            android:inputType="text"
             android:minHeight="50dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
@@ -110,61 +94,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_codigo" />
 
-        <!-- FILA 3: Usuario y Contraseña -->
-        <EditText
-            android:id="@+id/txt_usuario"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/edit_text_selector"
-            android:hint="Login"
-            android:inputType="text"
-            android:minHeight="50dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="#333333"
-            android:textColorHint="#757575"
-            app:layout_constraintEnd_toStartOf="@+id/txt_contrasena"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_nombre" />
+        <!-- FILA 3: Dirección -->
 
-        <EditText
-            android:id="@+id/txt_contrasena"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/edit_text_selector"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:minHeight="50dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="#333333"
-            android:textColorHint="#757575"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/txt_usuario"
-            app:layout_constraintTop_toBottomOf="@+id/txt_nombre" />
-
-        <!-- FILA 4: Nivel -->
-        <Spinner
-            android:id="@+id/txt_nivel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/edit_text_selector"
-            android:minHeight="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_usuario" />
+        <!-- FILA 4: Teléfono y Email -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- BOTONES CRUD -->
-    <!-- Agregado layout_marginHorizontal para separarlos del borde -->
     <LinearLayout
         android:id="@+id/layoutBotones"
         android:layout_width="match_parent"
@@ -208,13 +144,12 @@
             android:layout_weight="1"
             android:background="@drawable/button_red_rounded"
             android:onClick="Eliminar"
-            android:text="Borrar"
+            android:text="Eliminar"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- LISTA -->
-    <!-- Agregado layout_marginHorizontal -->
+    <!-- LISTA DE PROVEEDORES -->
     <ListView
         android:id="@+id/lista_articulos"
         android:layout_width="match_parent"
@@ -233,7 +168,6 @@
         app:layout_constraintTop_toBottomOf="@+id/layoutBotones" />
 
     <!-- BOTONES INFERIORES -->
-    <!-- Agregado layout_marginHorizontal y marginBottom extra para Xiaomi -->
     <LinearLayout
         android:id="@+id/layoutSalir"
         android:layout_width="match_parent"
@@ -268,12 +202,41 @@
             android:textColor="#FFFFFF" />
     </LinearLayout>
 
-    <!-- COMPATIBILIDAD -->
-    <TextView android:id="@+id/textView6" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
-    <TextView android:id="@+id/textView5" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
-    <TextView android:id="@+id/textView7" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
-    <TextView android:id="@+id/textView9" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
-    <TextView android:id="@+id/textView8" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
-    <TextView android:id="@+id/textView10" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+    <!-- TEXTVIEWS OCULTOS DE COMPATIBILIDAD (Sin cambios) -->
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

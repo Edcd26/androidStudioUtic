@@ -30,14 +30,14 @@
             android:background="@drawable/side_nav_bar">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/txtProveedores"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
                 android:gravity="center"
                 android:letterSpacing="0.05"
                 android:padding="16dp"
-                android:text="ADMINISTRACIÓN DE PROVEEDORES"
+                android:text="PROVEEDORES"
                 android:textAllCaps="true"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
@@ -224,7 +224,7 @@
 
     <!-- LISTA DE PROVEEDORES -->
     <ListView
-        android:id="@+id/lista_proveedores"
+        android:id="@+id/lista_articulos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="24dp"

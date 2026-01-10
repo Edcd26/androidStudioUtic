@@ -1,14 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <!-- CAMBIO AQUÍ: Cambiamos 'DayNight' por 'Light' -->
     <style name="Base.Theme.Prueba" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.Prueba" parent="Base.Theme.Prueba" />
 
-    <style name="Theme.Prueba.NoActionBar">
+    <!-- CORRECCIÓN: Se agrega parent="Theme.Prueba" para que herede la configuración necesaria -->
+    <style name="Theme.Prueba.NoActionBar" parent="Theme.Prueba">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

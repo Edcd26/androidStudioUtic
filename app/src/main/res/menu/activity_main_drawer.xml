@@ -9,9 +9,9 @@
             android:icon="@android:drawable/ic_menu_myplaces"
             android:title="@string/menu_Usuario" />
         <item
-            android:id="@+id/nav_Categoria"
+            android:id="@+id/nav_Deposito"
             android:icon="@android:drawable/ic_dialog_map"
-            android:title="@string/menu_Categoria" />
+            android:title="@string/menu_Deposito" />
         <item
             android:id="@+id/nav_Proveedor"
             android:icon="@android:drawable/ic_menu_recent_history"
@@ -21,7 +21,7 @@
             android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/menu_Producto" />
         <item
-            android:id="@+id/nav_U.Medida"
+            android:id="@+id/nav_U_Medida"
             android:icon="@android:drawable/ic_menu_send"
             android:title="@string/menu_UnidaddeMedida" />
         <item

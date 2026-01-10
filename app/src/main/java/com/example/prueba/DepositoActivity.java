@@ -1,5 +1,6 @@
 package com.example.prueba;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,19 +17,18 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class U_MedidaActivity extends AppCompatActivity {
-
+public class DepositoActivity extends AppCompatActivity {
     private Cursor fila;
     private ListView lista;
     private EditText aux_codigo, aux_descripcion;
     private Button registrar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_u_medida);
-
+        setContentView(R.layout.activity_deposito);
         lista = findViewById(R.id.lista_articulos);
         aux_codigo = findViewById(R.id.txt_codigo);
         aux_descripcion = findViewById(R.id.txt_descripcion);
@@ -57,7 +57,7 @@ public class U_MedidaActivity extends AppCompatActivity {
         SQLiteDatabase db = miconexion.getReadableDatabase();
 
         try {
-            fila = db.rawQuery("SELECT id_u_medida, u_medida_descri FROM u_medida ORDER BY id_u_medida", null);
+            fila = db.rawQuery("SELECT id_deposito, deposito_descri FROM deposito ORDER BY id_deposito", null);
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
             while (fila.moveToNext()) {
                 adapter.add(fila.getString(0) + " - " + fila.getString(1));
@@ -75,7 +75,7 @@ public class U_MedidaActivity extends AppCompatActivity {
         String codigo = aux_codigo.getText().toString();
 
         if (!codigo.isEmpty()) {
-            Cursor filaReg = BaseDeDatos.rawQuery("SELECT u_medida_descri FROM u_medida WHERE id_u_medida=" + codigo, null);
+            Cursor filaReg = BaseDeDatos.rawQuery("SELECT deposito_descri FROM deposito WHERE id_deposito=" + codigo, null);
 
             if (filaReg.moveToFirst()) {
                 aux_descripcion.setText(filaReg.getString(0));
@@ -96,13 +96,13 @@ public class U_MedidaActivity extends AppCompatActivity {
         String descri = aux_descripcion.getText().toString().toUpperCase().trim();
 
         if (!descri.isEmpty()) {
-            Cursor c = BaseDeDatos.rawQuery("SELECT * FROM u_medida WHERE u_medida_descri = '" + descri + "'", null);
+            Cursor c = BaseDeDatos.rawQuery("SELECT * FROM deposito WHERE deposito_descri = '" + descri + "'", null);
             if (c.getCount() > 0) {
-                Toast.makeText(this, "Esta unidad de medida ya existe", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Esta deposito ya existe", Toast.LENGTH_SHORT).show();
             } else {
                 ContentValues registro = new ContentValues();
-                registro.put("u_medida_descri", descri);
-                BaseDeDatos.insert("u_medida", null, registro);
+                registro.put("deposito_descri", descri);
+                BaseDeDatos.insert("deposito", null, registro);
 
                 Toast.makeText(this, "Guardado correctamente", Toast.LENGTH_SHORT).show();
                 Cancelar();
@@ -125,9 +125,9 @@ public class U_MedidaActivity extends AppCompatActivity {
 
         if (!codigo.isEmpty() && !descri.isEmpty()) {
             ContentValues registro = new ContentValues();
-            registro.put("u_medida_descri", descri);
+            registro.put("deposito_descri", descri);
 
-            int cant = BaseDeDatos.update("u_medida", registro, "id_u_medida=" + codigo, null);
+            int cant = BaseDeDatos.update("deposito", registro, "id_deposito=" + codigo, null);
             if (cant == 1) {
                 Toast.makeText(this, "Modificado correctamente", Toast.LENGTH_SHORT).show();
                 Cancelar();
@@ -136,7 +136,7 @@ public class U_MedidaActivity extends AppCompatActivity {
         }
         BaseDeDatos.close();
     }
-
+    // SELECT id_deposito, deposito_descri FROM deposito ORDER BY id_deposito
     public void Eliminar(View view) {
         final String codigo = aux_codigo.getText().toString();
         if (!codigo.isEmpty()) {
@@ -147,7 +147,7 @@ public class U_MedidaActivity extends AppCompatActivity {
                         // Actualizado a versión 2
                         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "bd_pam3", null, 2);
                         SQLiteDatabase db = admin.getWritableDatabase();
-                        db.delete("u_medida", "id_u_medida=" + codigo, null);
+                        db.delete("deposito", "id_deposito=" + codigo, null);
                         db.close();
                         Cancelar();
                         cargaLista();
