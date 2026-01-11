@@ -30,7 +30,7 @@ public class ProveedorActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_proveedor);
 
-        lista = findViewById(R.id.lista_articulos);
+        lista = findViewById(R.id.lista_proveedores);
         aux_codigo = findViewById(R.id.txt_codigo);
         aux_razonsocial = findViewById(R.id.txt_razonsocial);
         aux_ruc = findViewById(R.id.txt_ruc);

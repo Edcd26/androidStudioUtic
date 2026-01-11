@@ -5,241 +5,176 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8F5E9"
+    android:background="#F5F5F5"
     android:fitsSystemWindows="true"
-    android:paddingTop="16dp"
-    android:paddingBottom="32dp"
     tools:context=".DepositoActivity">
 
-    <!-- Tarjeta del Título -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardTitulo"
+    <View
+        android:id="@+id/top_view"
         android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:background="#388E3C"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="6dp"
+        android:layout_marginTop="32dp"
+        android:text="Gestión de Depósitos"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardForm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTitulo">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/side_nav_bar">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <TextView
-                android:id="@+id/txtProveedores"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:letterSpacing="0.05"
-                android:padding="16dp"
-                android:text="depositos"
-                android:textAllCaps="true"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:hint="Código">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_codigo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Descripción del Depósito">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txt_descripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_agregar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="2dp"
+                    android:backgroundTint="#388E3C"
+                    android:onClick="Registrar"
+                    android:text="Agregar"
+                    android:textSize="12sp"
+                    android:maxLines="1"
+                    android:textAllCaps="false"
+                    android:padding="0dp"
+                    app:cornerRadius="8dp" />
+
+                <Button
+                    android:id="@+id/btn_modificar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="2dp"
+                    android:backgroundTint="#388E3C"
+                    android:onClick="Modificar"
+                    android:text="Editar"
+                    android:textSize="12sp"
+                    android:maxLines="1"
+                    android:textAllCaps="false"
+                    android:padding="0dp"
+                    app:cornerRadius="8dp" />
+
+                <Button
+                    android:id="@+id/btn_eliminar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="2dp"
+                    android:backgroundTint="#D32F2F"
+                    android:onClick="Eliminar"
+                    android:text="Borrar"
+                    android:textSize="12sp"
+                    android:maxLines="1"
+                    android:textAllCaps="false"
+                    android:padding="0dp"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Contenedor del Formulario -->
-    <!-- Contenedor del Formulario -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/formContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_background_white"
-        android:elevation="4dp"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardTitulo">
-
-        <!-- FILA 1: Código -->
-        <EditText
-            android:id="@+id/txt_codigo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_selector"
-            android:hint="Código"
-            android:enabled="false"
-            android:inputType="text"
-            android:minHeight="50dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="#333333"
-            android:textColorHint="#757575"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <!-- FILA 2: Razón Social -->
-        <EditText
-            android:id="@+id/txt_descripcion"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/edit_text_selector"
-            android:hint="Descripcion"
-            android:inputType="text"
-            android:minHeight="50dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="#333333"
-            android:textColorHint="#757575"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_codigo" />
-
-        <!-- FILA 3: Dirección -->
-
-        <!-- FILA 4: Teléfono y Email -->
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- BOTONES CRUD -->
-    <LinearLayout
-        android:id="@+id/layoutBotones"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/formContainer">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_agregar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_green_rounded"
-            android:onClick="Registrar"
-            android:text="Agregar"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_modificar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_green_rounded"
-            android:onClick="Modificar"
-            android:text="Modificar"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_eliminar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_red_rounded"
-            android:onClick="Eliminar"
-            android:text="Eliminar"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <!-- LISTA DE PROVEEDORES -->
     <ListView
         android:id="@+id/lista_articulos"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_background_white"
-        android:clipToOutline="true"
-        android:elevation="2dp"
-        android:padding="8dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_constraintBottom_toTopOf="@+id/layoutSalir"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutBotones" />
+        android:background="@android:color/white"
+        android:divider="#EEEEEE"
+        android:dividerHeight="1dp"
+        app:layout_constraintBottom_toTopOf="@id/layoutInferior"
+        app:layout_constraintEnd_toEndOf="@id/cardForm"
+        app:layout_constraintStart_toStartOf="@id/cardForm"
+        app:layout_constraintTop_toBottomOf="@id/cardForm" />
 
-    <!-- BOTONES INFERIORES -->
     <LinearLayout
-        android:id="@+id/layoutSalir"
+        android:id="@+id/layoutInferior"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="16dp"
+        android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:id="@+id/btn_cancelar"
-            android:layout_width="0dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_gray_rounded"
             android:onClick="llamaCancelar"
-            android:text="Cancelar"
-            android:textColor="#FFFFFF" />
+            android:text="Limpiar"
+            android:textColor="#757575" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="#BDBDBD" />
+
+        <Button
             android:id="@+id/btn_salir"
-            android:layout_width="0dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_gradient_rounded"
             android:onClick="salir"
             android:text="Salir"
-            android:textColor="#FFFFFF" />
+            android:textColor="#D32F2F" />
     </LinearLayout>
-
-    <!-- TEXTVIEWS OCULTOS DE COMPATIBILIDAD (Sin cambios) -->
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,10 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -22,7 +22,7 @@ public class UsuarioActivity extends AppCompatActivity {
     private Cursor fila;
     private ListView lista;
     private EditText aux_codigo, aux_nombre, aux_login, aux_pass;
-    private Spinner txt_estado, txt_nivel;
+    private AutoCompleteTextView txt_estado, txt_nivel;
     private Button registrar;
     private Integer idSeleccionado;
 
@@ -38,20 +38,18 @@ public class UsuarioActivity extends AppCompatActivity {
         aux_nombre = findViewById(R.id.txt_nombre);
         aux_login = findViewById(R.id.txt_usuario);
         aux_pass = findViewById(R.id.txt_contrasena);
-        txt_estado = findViewById(R.id.txt_estado);
-        txt_nivel = findViewById(R.id.txt_nivel);
+        txt_estado = findViewById(R.id.txt_estado_auto);
+        txt_nivel = findViewById(R.id.txt_nivel_auto);
         registrar = findViewById(R.id.btn_agregar);
 
-        // --- 2. CONFIGURAR SPINNER ESTADO ---
+        // --- 2. CONFIGURAR DROPDOWN ESTADO ---
         String[] opcionesEstado = {"ACTIVO", "INACTIVO"};
-        ArrayAdapter<String> adapterEstado = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcionesEstado);
-        adapterEstado.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapterEstado = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, opcionesEstado);
         txt_estado.setAdapter(adapterEstado);
 
-        // --- 3. CONFIGURAR SPINNER NIVEL (ROL) ---
+        // --- 3. CONFIGURAR DROPDOWN NIVEL (ROL) ---
         String[] opcionesNivel = {"ADMINISTRADOR", "COMPRA"};
-        ArrayAdapter<String> adapterNivel = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcionesNivel);
-        adapterNivel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapterNivel = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, opcionesNivel);
         txt_nivel.setAdapter(adapterNivel);
 
         // Cargar lista inicial (Versión 2)
@@ -66,7 +64,6 @@ public class UsuarioActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 String listItem = (String) lista.getItemAtPosition(i);
                 try {
-                    // Extraemos el ID del string "1 - Juan - ..."
                     idSeleccionado = Integer.parseInt(listItem.split(" - ")[0]);
                     aux_codigo.setText(String.valueOf(idSeleccionado));
                     Recuperar();
@@ -77,19 +74,7 @@ public class UsuarioActivity extends AppCompatActivity {
         });
     }
 
-    private void setSpinnerValue(Spinner spinner, String value) {
-        if (value == null) return;
-        ArrayAdapter<String> adapter = (ArrayAdapter<String>) spinner.getAdapter();
-        if (adapter != null) {
-            int position = adapter.getPosition(value.toUpperCase());
-            if (position >= 0) {
-                spinner.setSelection(position);
-            }
-        }
-    }
-
     public void cargaLista() {
-        // Usamos Versión 2 sistemáticamente
         AdminSQLiteOpenHelper miconexion = new AdminSQLiteOpenHelper(this, "bd_pam3", null, 2);
         SQLiteDatabase db = miconexion.getReadableDatabase();
 
@@ -108,7 +93,6 @@ public class UsuarioActivity extends AppCompatActivity {
     }
 
     public void Recuperar() {
-        // CORRECCIÓN: Cambiado de versión 1 a versión 2
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "bd_pam3", null, 2);
         SQLiteDatabase db = admin.getReadableDatabase();
 
@@ -119,8 +103,8 @@ public class UsuarioActivity extends AppCompatActivity {
 
             if (c.moveToFirst()) {
                 aux_nombre.setText(c.getString(0));
-                setSpinnerValue(txt_nivel, c.getString(1));
-                setSpinnerValue(txt_estado, c.getString(2));
+                txt_nivel.setText(c.getString(1), false);
+                txt_estado.setText(c.getString(2), false);
                 aux_login.setText(c.getString(3));
                 aux_pass.setText(c.getString(4));
                 registrar.setEnabled(false);
@@ -137,12 +121,12 @@ public class UsuarioActivity extends AppCompatActivity {
         SQLiteDatabase db = miconexion.getWritableDatabase();
 
         String var_nom = aux_nombre.getText().toString().toUpperCase();
-        String var_rol = txt_nivel.getSelectedItem().toString().toUpperCase();
-        String var_est = txt_estado.getSelectedItem().toString().toUpperCase();
+        String var_rol = txt_nivel.getText().toString().toUpperCase();
+        String var_est = txt_estado.getText().toString().toUpperCase();
         String var_login = aux_login.getText().toString();
         String var_pass = aux_pass.getText().toString();
 
-        if (!var_nom.isEmpty() && !var_login.isEmpty() && !var_pass.isEmpty()) {
+        if (!var_nom.isEmpty() && !var_login.isEmpty() && !var_pass.isEmpty() && !var_rol.isEmpty() && !var_est.isEmpty()) {
             ContentValues registro = new ContentValues();
             registro.put("usu_nombre", var_nom);
             registro.put("usu_rol", var_rol);
@@ -170,12 +154,12 @@ public class UsuarioActivity extends AppCompatActivity {
 
         String codigo = aux_codigo.getText().toString();
         String nombre = aux_nombre.getText().toString().toUpperCase();
-        String rol = txt_nivel.getSelectedItem().toString().toUpperCase();
-        String estado = txt_estado.getSelectedItem().toString().toUpperCase();
+        String rol = txt_nivel.getText().toString().toUpperCase();
+        String estado = txt_estado.getText().toString().toUpperCase();
         String login = aux_login.getText().toString();
         String clave = aux_pass.getText().toString();
 
-        if (!codigo.isEmpty() && !nombre.isEmpty()) {
+        if (!codigo.isEmpty() && !nombre.isEmpty() && !rol.isEmpty() && !estado.isEmpty()) {
             ContentValues registro = new ContentValues();
             registro.put("usu_nombre", nombre);
             registro.put("usu_rol", rol);
@@ -225,8 +209,8 @@ public class UsuarioActivity extends AppCompatActivity {
         aux_nombre.setText("");
         aux_login.setText("");
         aux_pass.setText("");
-        if(txt_nivel.getAdapter() != null) txt_nivel.setSelection(0);
-        if(txt_estado.getAdapter() != null) txt_estado.setSelection(0);
+        txt_nivel.setText("", false);
+        txt_estado.setText("", false);
         registrar.setEnabled(true);
         aux_nombre.requestFocus();
     }

@@ -78,6 +78,10 @@ public class MenuPrincipalActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_salir)
         {
+            // Lógica para cerrar sesión: Volver al login y limpiar el stack
+            Intent intent = new Intent(this, AccesoActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             finish();
         }
 
