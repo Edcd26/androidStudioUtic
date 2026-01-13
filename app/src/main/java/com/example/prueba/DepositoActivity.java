@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,6 +39,7 @@ public class DepositoActivity extends AppCompatActivity {
         cargaLista();
 
         aux_codigo.setEnabled(false);
+        aux_codigo.setBackgroundColor(Color.LTGRAY); // Visual feedback for disabled field
         aux_descripcion.requestFocus();
 
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -98,7 +100,7 @@ public class DepositoActivity extends AppCompatActivity {
         if (!descri.isEmpty()) {
             Cursor c = BaseDeDatos.rawQuery("SELECT * FROM deposito WHERE deposito_descri = '" + descri + "'", null);
             if (c.getCount() > 0) {
-                Toast.makeText(this, "Esta deposito ya existe", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Este deposito ya existe", Toast.LENGTH_SHORT).show();
             } else {
                 ContentValues registro = new ContentValues();
                 registro.put("deposito_descri", descri);
@@ -124,6 +126,16 @@ public class DepositoActivity extends AppCompatActivity {
         String descri = aux_descripcion.getText().toString().toUpperCase().trim();
 
         if (!codigo.isEmpty() && !descri.isEmpty()) {
+            // Validar descripcion unica (excepto el actual)
+            Cursor c = BaseDeDatos.rawQuery("SELECT * FROM deposito WHERE deposito_descri = '" + descri + "' AND id_deposito != " + codigo, null);
+            if (c.getCount() > 0) {
+                Toast.makeText(this, "Ya existe otro deposito con esta descripción", Toast.LENGTH_SHORT).show();
+                c.close();
+                BaseDeDatos.close();
+                return;
+            }
+            c.close();
+
             ContentValues registro = new ContentValues();
             registro.put("deposito_descri", descri);
 

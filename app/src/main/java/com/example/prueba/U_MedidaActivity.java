@@ -3,6 +3,7 @@ package com.example.prueba;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,6 +39,7 @@ public class U_MedidaActivity extends AppCompatActivity {
         cargaLista();
 
         aux_codigo.setEnabled(false);
+        aux_codigo.setBackgroundColor(Color.LTGRAY); // Visual feedback for disabled field
         aux_descripcion.requestFocus();
 
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,19 +98,23 @@ public class U_MedidaActivity extends AppCompatActivity {
         String descri = aux_descripcion.getText().toString().toUpperCase().trim();
 
         if (!descri.isEmpty()) {
+            // Validar descripcion unica
             Cursor c = BaseDeDatos.rawQuery("SELECT * FROM u_medida WHERE u_medida_descri = '" + descri + "'", null);
             if (c.getCount() > 0) {
                 Toast.makeText(this, "Esta unidad de medida ya existe", Toast.LENGTH_SHORT).show();
-            } else {
-                ContentValues registro = new ContentValues();
-                registro.put("u_medida_descri", descri);
-                BaseDeDatos.insert("u_medida", null, registro);
-
-                Toast.makeText(this, "Guardado correctamente", Toast.LENGTH_SHORT).show();
-                Cancelar();
-                cargaLista();
+                c.close();
+                BaseDeDatos.close();
+                return;
             }
             c.close();
+
+            ContentValues registro = new ContentValues();
+            registro.put("u_medida_descri", descri);
+            BaseDeDatos.insert("u_medida", null, registro);
+
+            Toast.makeText(this, "Guardado correctamente", Toast.LENGTH_SHORT).show();
+            Cancelar();
+            cargaLista();
         } else {
             Toast.makeText(this, "Ingrese la descripción", Toast.LENGTH_SHORT).show();
         }
@@ -124,6 +130,16 @@ public class U_MedidaActivity extends AppCompatActivity {
         String descri = aux_descripcion.getText().toString().toUpperCase().trim();
 
         if (!codigo.isEmpty() && !descri.isEmpty()) {
+            // Validar descripcion unica (excepto el actual)
+            Cursor c = BaseDeDatos.rawQuery("SELECT * FROM u_medida WHERE u_medida_descri = '" + descri + "' AND id_u_medida != " + codigo, null);
+            if (c.getCount() > 0) {
+                Toast.makeText(this, "Ya existe otra unidad de medida con esta descripción", Toast.LENGTH_SHORT).show();
+                c.close();
+                BaseDeDatos.close();
+                return;
+            }
+            c.close();
+
             ContentValues registro = new ContentValues();
             registro.put("u_medida_descri", descri);
 

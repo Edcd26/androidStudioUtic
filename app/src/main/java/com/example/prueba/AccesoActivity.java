@@ -54,22 +54,30 @@ public class AccesoActivity extends AppCompatActivity {
 
         if(!usuario.isEmpty() && !clave.isEmpty())
         {
-            Cursor fila = BaseDeDatos.rawQuery("select cod_usu,usu_nombre,usu_rol from usuario where usu_login='"+ usuario +"' and usu_clave='"+clave+"'", null);
+            Cursor fila = BaseDeDatos.rawQuery("select cod_usu,usu_nombre,usu_rol,usu_estado from usuario where usu_login='"+ usuario +"' and usu_clave='"+clave+"'", null);
 
             if(fila.moveToFirst())
             {
+                String estado = fila.getString(3);
+                if (estado != null && estado.equalsIgnoreCase("INACTIVO")) {
+                    Toast.makeText(this, "Usuario Bloqueado. Contacte con el Administrador.", Toast.LENGTH_LONG).show();
+                    BaseDeDatos.close();
+                    return;
+                }
+
                 Bundle bundle = new Bundle();
                 bundle.putString("parametro_usu", fila.getString(1));
                 bundle.putString("parametro_rol", fila.getString(2));
+                bundle.putString("parametro_login", usuario);
 
-                guardar_preferencias();
+                guardar_preferencias(fila.getString(1));
                 
                 Intent siguiente = new Intent(this, MenuPrincipalActivity.class);
                 siguiente.putExtras(bundle);
                 startActivity(siguiente);
                 
                 BaseDeDatos.close();
-                finish(); // Finalizar después de iniciar la siguiente
+                finish();
             }else
             {
                 Toast.makeText(this, "Usuario o Clave Incorrectos", Toast.LENGTH_LONG).show();
@@ -82,7 +90,7 @@ public class AccesoActivity extends AppCompatActivity {
         }
     }
 
-    public void guardar_preferencias(){
+    public void guardar_preferencias(String nombreCompleto){
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
@@ -91,14 +99,15 @@ public class AccesoActivity extends AppCompatActivity {
 
         editor.putString("user",prefe_usuario);
         editor.putString("pass",prefe_clave);
-        editor.commit();
+        editor.putString("nombre", nombreCompleto);
+        editor.apply();
     }
 
     public void leer_preferencias(View view)
     {
         SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
-        String user = preferences.getString("user","No existe Informacion del login");
-        String pass = preferences.getString("pass","No existe Informacion del Password");
+        String user = preferences.getString("user","");
+        String pass = preferences.getString("pass","");
 
         aux_login.setText(user);
         aux_pass.setText(pass);

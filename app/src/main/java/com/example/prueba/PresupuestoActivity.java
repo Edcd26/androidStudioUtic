@@ -64,8 +64,12 @@ public class PresupuestoActivity extends AppCompatActivity {
 
         listaPresupuestos.setOnItemClickListener((parent, view, position, id) -> {
             String item = presupuestosList.get(position);
-            int idPresu = Integer.parseInt(item.split(" - ")[0].replace("Nro: ", "").trim());
-            verDetallePresupuesto(idPresu);
+            try {
+                int idPresu = Integer.parseInt(item.split(" - ")[0].replace("Nro: ", "").trim());
+                verDetallePresupuesto(idPresu);
+            } catch (Exception e) {
+                Toast.makeText(this, "Error al seleccionar presupuesto", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -82,13 +86,18 @@ public class PresupuestoActivity extends AppCompatActivity {
         if (!filtro.isEmpty()) sql += " AND pr.id_presupuesto LIKE '%" + filtro + "%' ";
         sql += " ORDER BY pr.id_presupuesto DESC";
 
-        Cursor c = db.rawQuery(sql, null);
-        while (c.moveToNext()) {
-            presupuestosList.add("Nro: " + c.getString(0) + " - Prov. " + c.getString(1) + 
-                           "\nTotal: " + c.getString(4) + " - Pedido #" + c.getString(2) + " - [" + c.getString(3) + "]"+
-                    "\nVer Detalles");
+        try {
+            Cursor c = db.rawQuery(sql, null);
+            while (c.moveToNext()) {
+                presupuestosList.add("Nro: " + c.getString(0) + " - Prov. " + c.getString(1) + 
+                               "\nTotal: " + c.getString(4) + " - Pedido #" + c.getString(2) + " - [" + c.getString(3) + "]\nVer Detalles");
+            }
+            c.close();
+        } catch (Exception e) {
+            Toast.makeText(this, "Error al cargar presupuestos", Toast.LENGTH_SHORT).show();
+        } finally {
+            db.close();
         }
-        c.close(); db.close();
 
         listaPresupuestos.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, presupuestosList) {
             @NonNull @Override public View getView(int pos, @Nullable View v, @NonNull ViewGroup parent) {
@@ -96,9 +105,10 @@ public class PresupuestoActivity extends AppCompatActivity {
                 TextView t1 = view.findViewById(android.R.id.text1);
                 TextView t2 = view.findViewById(android.R.id.text2);
                 String[] parts = getItem(pos).split("\n");
-                if (parts.length > 1) {
+                if (parts.length >= 2) {
                     t1.setText(parts[0]); t1.setTextSize(14); t1.setAlpha(0.9f);
-                    t2.setText(parts[1]); t2.setTextSize(12); t2.setAlpha(0.6f);
+                    t2.setText(parts[1] + (parts.length > 2 ? "\n" + parts[2] : ""));
+                    t2.setTextSize(12); t2.setAlpha(0.6f);
                 }
                 return view;
             }
@@ -141,7 +151,7 @@ public class PresupuestoActivity extends AppCompatActivity {
                 TextView t1 = view.findViewById(android.R.id.text1);
                 TextView t2 = view.findViewById(android.R.id.text2);
                 String[] parts = getItem(pos).split("\n");
-                if (parts.length > 2) {
+                if (parts.length >= 3) {
                     t1.setText(parts[0]); t1.setTextSize(13); t1.setAlpha(0.9f);
                     t2.setText(parts[1] + "\n" + parts[2]);
                     t2.setTextSize(11); t2.setAlpha(0.7f);
@@ -155,7 +165,6 @@ public class PresupuestoActivity extends AppCompatActivity {
             String selected = parent.getItemAtPosition(position).toString();
             int idPed = Integer.parseInt(selected.replace("Pedido #", "").trim());
             
-            // Buscar Deposito del pedido
             AdminSQLiteOpenHelper admin2 = new AdminSQLiteOpenHelper(this, "bd_pam3", null, 2);
             SQLiteDatabase db2 = admin2.getReadableDatabase();
             Cursor c = db2.rawQuery("SELECT d.deposito_descri FROM pedidos p INNER JOIN deposito d ON p.id_deposito = d.id_deposito WHERE p.id_pedido = " + idPed, null);
@@ -174,7 +183,7 @@ public class PresupuestoActivity extends AppCompatActivity {
                     if(detalleTempDisplay.get(i).contains(prodS)){
                         detalleTempPrecio.set(i, precio);
                         int cant = detalleTempCant.get(i);
-                        detalleTempDisplay.set(i, "✅ " + prodS + "\nCant: " + cant + " - Prec Unit: " + precio + "\nTotal: " + (cant*precio));
+                        detalleTempDisplay.set(i, "📦 " + prodS + "\nCant: " + cant + " - Prec Unit: " + precio + "\nTotal: " + (cant*precio));
                         adapterDetalle.notifyDataSetChanged();
                         etPrecio.setText(""); spProd.setText("");
                         break;
@@ -236,7 +245,7 @@ public class PresupuestoActivity extends AppCompatActivity {
         spProv.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, provs));
 
         ArrayList<String> peds = new ArrayList<>();
-        Cursor c2 = db.rawQuery("SELECT id_pedido FROM pedidos WHERE p_estado = 'PENDIENTE'", null);
+        Cursor c2 = db.rawQuery("SELECT id_pedido FROM pedidos", null);
         while(c2.moveToNext()) peds.add("Pedido #" + c2.getInt(0));
         c2.close();
         spPed.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, peds));
@@ -263,11 +272,11 @@ public class PresupuestoActivity extends AppCompatActivity {
                 ContentValues d = new ContentValues();
                 d.put("id_presupuesto", idPr); d.put("cod_producto", detalleTempProdId.get(i));
                 d.put("cantidad", detalleTempCant.get(i)); d.put("precio", detalleTempPrecio.get(i));
-                d.put("total", (long)detalleTempCant.get(i) * detalleTempPrecio.get(i));
+                d.put("total", detalleTempCant.get(i) * detalleTempPrecio.get(i));
                 db.insert("detalle_presupuesto", null, d);
             }
             db.setTransactionSuccessful();
-            Toast.makeText(this, "Presupuesto registrado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Presupuesto registrado exitosamente", Toast.LENGTH_SHORT).show();
             return true;
         } finally { db.endTransaction(); db.close(); }
     }
@@ -288,8 +297,7 @@ public class PresupuestoActivity extends AppCompatActivity {
         Cursor c = db.rawQuery("SELECT pr.fecha, p.prov_razonsocial, pr.id_pedido, d.deposito_descri FROM presupuestos pr " +
                 "INNER JOIN proveedor p ON pr.id_prov = p.cod_prov " +
                 "INNER JOIN pedidos ped ON pr.id_pedido = ped.id_pedido " +
-                "INNER JOIN deposito d ON ped.id_deposito = d.id_deposito " +
-                "WHERE pr.id_presupuesto=" + idPresu, null);
+                "INNER JOIN deposito d ON ped.id_deposito = d.id_deposito WHERE pr.id_presupuesto=" + idPresu, null);
         if(c.moveToFirst()){
             ((AutoCompleteTextView)v.findViewById(R.id.sp_prov_auto)).setText(c.getString(1));
             ((AutoCompleteTextView)v.findViewById(R.id.sp_pedido_auto)).setText("Pedido #" + c.getInt(2));
@@ -301,26 +309,25 @@ public class PresupuestoActivity extends AppCompatActivity {
         Cursor d = db.rawQuery("SELECT p.prod_descri, dp.cantidad, dp.precio, dp.total FROM detalle_presupuesto dp " +
                 "INNER JOIN producto p ON dp.cod_producto = p.id_producto WHERE dp.id_presupuesto=" + idPresu, null);
         while(d.moveToNext()){
-            det.add("📋 " + d.getString(0) + "\nCant: " + d.getInt(1) + " - Prec Unit: " + d.getInt(2) + "\nTotal: " + d.getInt(3));
+            det.add("📦 " + d.getString(0) + "\nCant: " + d.getInt(1) + " - Prec Unit: " + d.getInt(2) + "\nTotal: " + d.getInt(3));
         }
         d.close(); db.close();
 
-        ListView lvDetalle = v.findViewById(R.id.lv_detalle_presu);
-        lvDetalle.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, det) {
+        ArrayAdapter<String> adapterDetalle = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, det) {
             @NonNull @Override public View getView(int pos, @Nullable View v, @NonNull ViewGroup parent) {
                 View view = super.getView(pos, v, parent);
                 TextView t1 = view.findViewById(android.R.id.text1);
                 TextView t2 = view.findViewById(android.R.id.text2);
                 String[] parts = getItem(pos).split("\n");
-                if (parts.length > 2) {
+                if (parts.length >= 3) {
                     t1.setText(parts[0]); t1.setTextSize(13); t1.setAlpha(0.9f);
                     t2.setText(parts[1] + "\n" + parts[2]);
                     t2.setTextSize(11); t2.setAlpha(0.7f);
                 }
                 return view;
             }
-        });
-        
+        };
+        ((ListView)v.findViewById(R.id.lv_detalle_presu)).setAdapter(adapterDetalle);
         v.findViewById(R.id.btn_cancelar_presu).setOnClickListener(view -> dialog.dismiss());
         dialog.show();
     }

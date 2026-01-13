@@ -1,9 +1,12 @@
 package com.example.prueba;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +35,6 @@ public class UsuarioActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_usuario);
 
-        // --- 1. ENLAZAR CONTROLES ---
         lista = findViewById(R.id.lista_articulos);
         aux_codigo = findViewById(R.id.txt_codigo);
         aux_nombre = findViewById(R.id.txt_nombre);
@@ -42,23 +44,20 @@ public class UsuarioActivity extends AppCompatActivity {
         txt_nivel = findViewById(R.id.txt_nivel_auto);
         registrar = findViewById(R.id.btn_agregar);
 
-        // --- 2. CONFIGURAR DROPDOWN ESTADO ---
         String[] opcionesEstado = {"ACTIVO", "INACTIVO"};
         ArrayAdapter<String> adapterEstado = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, opcionesEstado);
         txt_estado.setAdapter(adapterEstado);
 
-        // --- 3. CONFIGURAR DROPDOWN NIVEL (ROL) ---
         String[] opcionesNivel = {"ADMINISTRADOR", "COMPRA"};
         ArrayAdapter<String> adapterNivel = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, opcionesNivel);
         txt_nivel.setAdapter(adapterNivel);
 
-        // Cargar lista inicial (Versión 2)
         cargaLista();
 
         aux_codigo.setEnabled(false);
+        aux_codigo.setBackgroundColor(Color.LTGRAY); // Visual feedback for disabled field
         aux_nombre.requestFocus();
 
-        // --- 4. LISTENER PARA SELECCIONAR DE LA LISTA ---
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
@@ -127,6 +126,16 @@ public class UsuarioActivity extends AppCompatActivity {
         String var_pass = aux_pass.getText().toString();
 
         if (!var_nom.isEmpty() && !var_login.isEmpty() && !var_pass.isEmpty() && !var_rol.isEmpty() && !var_est.isEmpty()) {
+            // Validar login unico
+            Cursor c = db.rawQuery("SELECT * FROM usuario WHERE usu_login = '" + var_login + "'", null);
+            if (c.getCount() > 0) {
+                Toast.makeText(this, "Ya existe un usuario con este Login", Toast.LENGTH_SHORT).show();
+                c.close();
+                db.close();
+                return;
+            }
+            c.close();
+
             ContentValues registro = new ContentValues();
             registro.put("usu_nombre", var_nom);
             registro.put("usu_rol", var_rol);
@@ -160,6 +169,32 @@ public class UsuarioActivity extends AppCompatActivity {
         String clave = aux_pass.getText().toString();
 
         if (!codigo.isEmpty() && !nombre.isEmpty() && !rol.isEmpty() && !estado.isEmpty()) {
+            SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+            String currentLoggedUser = preferences.getString("user", "");
+
+            // Validar que no se inactive a sí mismo
+            Cursor curUsu = db.rawQuery("SELECT usu_login FROM usuario WHERE cod_usu = " + codigo, null);
+            if (curUsu.moveToFirst()) {
+                String loginAModificar = curUsu.getString(0);
+                if (loginAModificar.equals(currentLoggedUser) && estado.equals("INACTIVO")) {
+                    Toast.makeText(this, "No puede inactivar su propio usuario", Toast.LENGTH_SHORT).show();
+                    curUsu.close();
+                    db.close();
+                    return;
+                }
+            }
+            curUsu.close();
+
+            // Validar login unico (excepto el actual)
+            Cursor c = db.rawQuery("SELECT * FROM usuario WHERE usu_login = '" + login + "' AND cod_usu != " + codigo, null);
+            if (c.getCount() > 0) {
+                Toast.makeText(this, "Ya existe otro usuario con este Login", Toast.LENGTH_SHORT).show();
+                c.close();
+                db.close();
+                return;
+            }
+            c.close();
+
             ContentValues registro = new ContentValues();
             registro.put("usu_nombre", nombre);
             registro.put("usu_rol", rol);
@@ -181,6 +216,47 @@ public class UsuarioActivity extends AppCompatActivity {
     public void Eliminar(View view) {
         final String codigo = aux_codigo.getText().toString();
         if (!codigo.isEmpty()) {
+            SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
+            final String currentLoggedUser = preferences.getString("user", "");
+
+            AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "bd_pam3", null, 2);
+            SQLiteDatabase db = admin.getReadableDatabase();
+
+            // Validar que no se elimine a sí mismo
+            Cursor curUsu = db.rawQuery("SELECT usu_login FROM usuario WHERE cod_usu = " + codigo, null);
+            if (curUsu.moveToFirst()) {
+                String loginAEliminar = curUsu.getString(0);
+                if (loginAEliminar.equals(currentLoggedUser)) {
+                    Toast.makeText(this, "No puede eliminar su propio usuario", Toast.LENGTH_SHORT).show();
+                    curUsu.close();
+                    db.close();
+                    return;
+                }
+            }
+            curUsu.close();
+
+            // Verificar si tiene registros en pedidos o presupuestos
+            Cursor cPed = db.rawQuery("SELECT COUNT(*) FROM pedidos WHERE id_user = " + codigo, null);
+            Cursor cPresu = db.rawQuery("SELECT COUNT(*) FROM presupuestos WHERE id_user = " + codigo, null);
+            
+            int totalRegistros = 0;
+            if (cPed.moveToFirst()) totalRegistros += cPed.getInt(0);
+            if (cPresu.moveToFirst()) totalRegistros += cPresu.getInt(0);
+            
+            cPed.close();
+            cPresu.close();
+
+            if (totalRegistros > 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("No es posible eliminar");
+                builder.setMessage("Este usuario se encuentra asociado a " + totalRegistros + " registros del flujo de compras.\n\nSe recomienda INACTIVAR el usuario en lugar de eliminarlo.");
+                builder.setPositiveButton("Aceptar", null);
+                builder.show();
+                db.close();
+                return;
+            }
+            db.close();
+
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("¿Desea eliminar este usuario?");
             builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {

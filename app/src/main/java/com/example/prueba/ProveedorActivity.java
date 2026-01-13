@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,11 +40,11 @@ public class ProveedorActivity extends AppCompatActivity {
         aux_email = findViewById(R.id.txt_email);
         registrar = findViewById(R.id.btn_agregar);
 
-        // Carga inicial usando versión 2
         cargaLista();
 
         aux_codigo.setEnabled(false);
-        aux_razonsocial.requestFocus();
+        aux_codigo.setBackgroundColor(Color.LTGRAY); // Visual feedback
+        aux_ruc.requestFocus();
 
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -61,7 +62,6 @@ public class ProveedorActivity extends AppCompatActivity {
     }
 
     public void cargaLista() {
-        // Actualizado a Versión 2
         AdminSQLiteOpenHelper miconexion = new AdminSQLiteOpenHelper(this, "bd_pam3", null, 2);
         SQLiteDatabase db = miconexion.getReadableDatabase();
 
@@ -80,7 +80,6 @@ public class ProveedorActivity extends AppCompatActivity {
     }
 
     public void Recuperar() {
-        // Actualizado a Versión 2
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "bd_pam3", null, 2);
         SQLiteDatabase db = admin.getReadableDatabase();
 
@@ -105,7 +104,6 @@ public class ProveedorActivity extends AppCompatActivity {
     }
 
     public void Registrar(View view) {
-        // Actualizado a Versión 2
         AdminSQLiteOpenHelper miconexion = new AdminSQLiteOpenHelper(this, "bd_pam3", null, 2);
         SQLiteDatabase db = miconexion.getWritableDatabase();
 
@@ -116,6 +114,16 @@ public class ProveedorActivity extends AppCompatActivity {
         String em = aux_email.getText().toString().toUpperCase();
 
         if (!rs.isEmpty() && !ruc.isEmpty()) {
+            // Validar RUC unico
+            Cursor c = db.rawQuery("SELECT * FROM proveedor WHERE prov_ruc = '" + ruc + "'", null);
+            if (c.getCount() > 0) {
+                Toast.makeText(this, "Ya existe un proveedor con este RUC", Toast.LENGTH_SHORT).show();
+                c.close();
+                db.close();
+                return;
+            }
+            c.close();
+
             ContentValues registro = new ContentValues();
             registro.put("prov_razonsocial", rs);
             registro.put("prov_ruc", ruc);
@@ -138,7 +146,6 @@ public class ProveedorActivity extends AppCompatActivity {
     }
 
     public void Modificar(View view) {
-        // Actualizado a Versión 2
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "bd_pam3", null, 2);
         SQLiteDatabase db = admin.getWritableDatabase();
 
@@ -149,7 +156,17 @@ public class ProveedorActivity extends AppCompatActivity {
         String dir = aux_direccion.getText().toString().toUpperCase();
         String em = aux_email.getText().toString().toUpperCase();
 
-        if (!codigo.isEmpty() && !rs.isEmpty()) {
+        if (!codigo.isEmpty() && !rs.isEmpty() && !ruc.isEmpty()) {
+            // Validar RUC unico (excepto el actual)
+            Cursor c = db.rawQuery("SELECT * FROM proveedor WHERE prov_ruc = '" + ruc + "' AND cod_prov != " + codigo, null);
+            if (c.getCount() > 0) {
+                Toast.makeText(this, "Ya existe otro proveedor con este RUC", Toast.LENGTH_SHORT).show();
+                c.close();
+                db.close();
+                return;
+            }
+            c.close();
+
             ContentValues registro = new ContentValues();
             registro.put("prov_razonsocial", rs);
             registro.put("prov_ruc", ruc);
@@ -177,7 +194,6 @@ public class ProveedorActivity extends AppCompatActivity {
             builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Actualizado a Versión 2
                     AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(ProveedorActivity.this, "bd_pam3", null, 2);
                     SQLiteDatabase db = admin.getWritableDatabase();
                     db.delete("proveedor", "cod_prov =" + codigo, null);
@@ -205,7 +221,7 @@ public class ProveedorActivity extends AppCompatActivity {
         aux_direccion.setText("");
         aux_email.setText("");
         registrar.setEnabled(true);
-        aux_razonsocial.requestFocus();
+        aux_ruc.requestFocus();
     }
 
     public void salir(View view) {

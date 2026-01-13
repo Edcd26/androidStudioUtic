@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,6 +53,7 @@ public class ProductosActivity extends AppCompatActivity {
         cargaLista();
 
         aux_codigo.setEnabled(false);
+        aux_codigo.setBackgroundColor(Color.LTGRAY); // Visual feedback
         aux_descripcion.requestFocus();
 
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -159,6 +161,16 @@ public class ProductosActivity extends AppCompatActivity {
         String descri = aux_descripcion.getText().toString().toUpperCase();
 
         if (!descri.isEmpty() && idUM != -1 && !tipo.isEmpty()) {
+            // Validar descripcion unica
+            Cursor c = db.rawQuery("SELECT * FROM producto WHERE prod_descri = '" + descri + "'", null);
+            if (c.getCount() > 0) {
+                Toast.makeText(this, "Ya existe un producto con esta descripción", Toast.LENGTH_SHORT).show();
+                c.close();
+                db.close();
+                return;
+            }
+            c.close();
+
             ContentValues registro = new ContentValues();
             registro.put("prod_tipo", tipo);
             registro.put("id_u_medida", idUM);
@@ -197,6 +209,16 @@ public class ProductosActivity extends AppCompatActivity {
         String descri = aux_descripcion.getText().toString().toUpperCase();
 
         if (!codigo.isEmpty() && !descri.isEmpty() && idUM != -1 && !tipo.isEmpty()) {
+            // Validar descripcion unica (excepto actual)
+            Cursor c = db.rawQuery("SELECT * FROM producto WHERE prod_descri = '" + descri + "' AND id_producto != " + codigo, null);
+            if (c.getCount() > 0) {
+                Toast.makeText(this, "Ya existe otro producto con esta descripción", Toast.LENGTH_SHORT).show();
+                c.close();
+                db.close();
+                return;
+            }
+            c.close();
+
             ContentValues registro = new ContentValues();
             registro.put("prod_tipo", tipo);
             registro.put("id_u_medida", idUM);
