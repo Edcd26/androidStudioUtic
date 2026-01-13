@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/tv_titulo_modal_presu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="REGISTRAR PRESUPUESTO"
+        android:textAlignment="center"
+        android:textColor="#388E3C"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Proveedor y Pedido en la misma fila -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Proveedor">
+            <AutoCompleteTextView android:id="@+id/sp_prov_auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="none" android:textSize="12sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:layout_marginStart="8dp"
+            android:hint="Pedido">
+            <AutoCompleteTextView android:id="@+id/sp_pedido_auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="none" android:textSize="12sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <!-- Información de Depósito (Informativo) -->
+    <TextView
+        android:id="@+id/tv_deposito_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Depósito: -"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:textColor="#757575"
+        android:layout_marginBottom="10dp"
+        android:paddingStart="4dp"/>
+
+    <!-- Carga de Precios Estética -->
+    <LinearLayout
+        android:id="@+id/layout_carga_precios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:background="#F5F5F5"
+        android:layout_marginBottom="10dp">
+        
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cotizar Producto del Pedido" android:textStyle="bold" android:textSize="12sp" android:layout_marginBottom="8dp" />
+
+        <!-- Producto en su propia fila -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Seleccionar Producto"
+            android:layout_marginBottom="8dp">
+            <AutoCompleteTextView android:id="@+id/sp_prod_auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="none" android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Precio y Botón OK en la fila de abajo -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Precio Unitario">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/et_precio_presu" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="number" android:textSize="13sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button android:id="@+id/btn_add_precio" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:text="OK" android:backgroundTint="#388E3C" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Resumen de Cotización" android:textSize="11sp" android:layout_marginBottom="4dp" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:cardCornerRadius="4dp" app:cardElevation="2dp" android:layout_marginBottom="16dp">
+        <ListView android:id="@+id/lv_detalle_presu" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="#EEEEEE" android:dividerHeight="1dp" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Botones Registrar y Cancelar en la misma fila -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button android:id="@+id/btn_registrar_presu" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="REGISTRAR" android:backgroundTint="#388E3C" app:cornerRadius="8dp" />
+        <Button android:id="@+id/btn_cancelar_presu" style="@style/Widget.MaterialComponents.Button.TextButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:text="CANCELAR" android:textColor="#D32F2F" />
+    </LinearLayout>
+</LinearLayout>

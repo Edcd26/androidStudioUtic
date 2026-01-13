@@ -10,16 +10,59 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Prueba">
+        android:theme="@style/Base.Theme.Prueba">
+
+        <activity
+            android:name=".PresupuestoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Prueba"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".PedidoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Prueba"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".DepositoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Prueba"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".UsuarioActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Prueba"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ProveedorActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Prueba"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ProductosActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Prueba"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".U_MedidaActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Prueba"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".AccesoActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MenuPrincipalActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Prueba.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>

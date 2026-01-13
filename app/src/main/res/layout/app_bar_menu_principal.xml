@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E8F5E9"
+    tools:context=".MenuPrincipalActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Prueba.AppBarOverlay">
+
+        <!-- Toolbar con Degradado -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/side_nav_bar"
+            app:popupTheme="@style/Theme.Prueba.PopupOverlay" />
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido Principal (Lo que se ve cuando el menú está cerrado) -->
+    <!-- Aquí agregamos una tarjeta blanca de bienvenida para mantener el estilo -->
+    <include layout="@layout/content_menu_principal" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
